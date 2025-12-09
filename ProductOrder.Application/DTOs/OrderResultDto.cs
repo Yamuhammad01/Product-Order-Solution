@@ -8,8 +8,14 @@ namespace ProductOrder.Application.DTOs
 {
     public class OrderResultDto
     {
-        public Guid OrderId { get; set; }
         public bool Success { get; set; }
-        public string? Message { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public Guid? OrderId { get; set; }
+
+        public static OrderResultDto Successful(Guid orderId)
+            => new() { Success = true, OrderId = orderId };
+
+        public static OrderResultDto Failed(string message)
+            => new() { Success = false, Message = message };
     }
 }

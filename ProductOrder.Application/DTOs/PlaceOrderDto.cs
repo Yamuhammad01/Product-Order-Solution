@@ -8,11 +8,11 @@ namespace ProductOrder.Application.DTOs
 {
     public class PlaceOrderDto
     {
-        public List<OrderItemDto> Items { get; set; } = new();
+        public List<OrderProductDto> Items { get; set; } = new();
     }
-    public class OrderItemDto
+    public class OrderProductDto
     {
-        public Guid ProductId { get; set; }
+        public int ProductId { get; set; }
         public int Quantity { get; set; }
     }
 }

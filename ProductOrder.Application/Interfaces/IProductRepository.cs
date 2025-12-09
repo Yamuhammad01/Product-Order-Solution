@@ -11,9 +11,10 @@ namespace ProductOrder.Application.Interfaces
     {
         Task <Product> AddProductAsync(Product product);
         Task<Product?> UpdateProductAsync(Product product); // update a product interface
-        Task<Product?> GetProductByIdAsync(Guid id); // get a product by id 
+        Task<Product?> GetProductByIdAsync(int id); // get a product by id 
         Task<IEnumerable<Product>> GetAllProductsAsync(); // return a list of all products 
-        Task<bool> DeleteProductAsync(Guid id);
+        Task<bool> DeleteProductAsync(int id);
+        Task UpdateAsync(Product product);
         // void Add(Product product);
     }
 }

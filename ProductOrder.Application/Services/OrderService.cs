@@ -13,55 +13,72 @@ namespace ProductOrder.Application.Services
     public class OrderService
     {
         private readonly IProductRepository _productRepository;
-        private readonly IProductOrderDbContext _dbContext;
-        public OrderService(IProductRepository productRepository, IProductOrderDbContext productOrderDbContext)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IOrderRepository _orderRepository;
+
+        public OrderService(IProductRepository productRepository,
+            IUnitOfWork unitOfWork,
+            IOrderRepository orderRepository)
         {
             _productRepository = productRepository;
-            _dbContext = productOrderDbContext;
+            _unitOfWork = unitOfWork;
+            _orderRepository = orderRepository;
         }
 
         public async Task<OrderResultDto> PlaceOrderAsync(PlaceOrderDto dto)
         {
-           // using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            if (dto.Items == null || !dto.Items.Any())
+                return OrderResultDto.Failed("Order must contain at least one item.");
 
-            var order = new Order();
+            await _unitOfWork.BeginTransactionAsync();
 
-            foreach (var itemDto in dto.Items)
+            try
             {
-                // Lock product row for update to prevent overselling
-                var product = await _dbContext.Products
-                    .Where(p => p.Id == itemDto.ProductId)
-                    .FirstOrDefaultAsync();
+                var order = new Order();
 
-                if (product == null)
-                    return new OrderResultDto { Success = false, Message = $"Product {itemDto.ProductId} not found" };
-
-                if (product.StockQuantity < itemDto.Quantity)
-                    return new OrderResultDto
-                    {
-                        Success = false,
-                        Message = $"Not enough stock for product {product.Name}"
-                    };
-
-                // Decrease stock
-                product.StockQuantity -= itemDto.Quantity;
-
-                order.Items.Add(new OrderProduct
+                foreach (var item in dto.Items)  // item from the dto
                 {
-                    ProductId = product.Id,
-                    Quantity = itemDto.Quantity,
-                    Price = product.Price
-                });
+                    // Get product via repository 
+                    var product = await _productRepository.GetProductByIdAsync(item.ProductId);
 
-                _dbContext.Products.Update(product);
+                    if (product == null)
+                        return OrderResultDto.Failed($"Product {item.ProductId} not found.");
+
+                    if (product.StockQuantity < item.Quantity)
+                        return OrderResultDto.Failed(
+                            $"Not enough stock for product '{product.Name}'."
+                        );
+
+                    // Reduce stock
+                    product.StockQuantity -= item.Quantity;
+
+                    // Add item to order
+                    order.Items.Add(new OrderProduct
+                    {
+                        ProductId = product.Id,
+                        Quantity = item.Quantity,
+                        Price = product.Price
+                    });
+
+                    await _productRepository.UpdateAsync(product); 
+                }
+
+                await _orderRepository.AddAsync(order);
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitAsync(); // commit everything together
+
+                return OrderResultDto.Successful(order.Id);
             }
-
-            _dbContext.Orders.Add(order);
-            await _dbContext.SaveChangesAsync();
-           // await transaction.CommitAsync();
-
-            return new OrderResultDto { Success = true, OrderId = order.Id };
+            catch
+            {
+                await _unitOfWork.RollbackAsync(); // rollback everything if an error occurs mid-operation
+                return OrderResultDto.Failed("An error occurred while placing the order.");
+            }
         }
+
+
+
+
     }
 }
 

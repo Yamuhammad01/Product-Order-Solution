@@ -26,7 +26,7 @@ namespace ProductOrder.Infrastructure.Repository
         }
 
         // get a product by id
-        public async Task<Product?> GetProductByIdAsync(Guid id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
             return await _dbContext.Products.FindAsync(id);
         }
@@ -37,13 +37,21 @@ namespace ProductOrder.Infrastructure.Repository
             return await _dbContext.Products.ToListAsync();
         }
 
-        // update a product
+        // update a product method for crud operation
         public async Task<Product?> UpdateProductAsync(Product product)
         {
             _dbContext.Products.Update(product);
             await _dbContext.SaveChangesAsync();
             return product;
         }
+
+        // product update for orderservice 
+        public async Task UpdateAsync(Product product)
+        {
+            _dbContext.Products.Update(product);
+            await Task.CompletedTask;
+        }
+
         // find a product by id and delete it
         public async Task<bool> DeleteProductAsync(Guid id)
         {

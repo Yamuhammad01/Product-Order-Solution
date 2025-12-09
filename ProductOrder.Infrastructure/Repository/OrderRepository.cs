@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProductOrder.Application.Interfaces;
 using ProductOrder.Domain.Entities;
 using ProductOrder.Infrastructure.Persistence;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProductOrder.Infrastructure.Repository
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository 
     {
         private readonly ProductOrderDbContext _dbContext;
         public OrderRepository(ProductOrderDbContext productOrderDbContext) 
@@ -17,11 +18,9 @@ namespace ProductOrder.Infrastructure.Repository
             _dbContext = productOrderDbContext;
         }
 
-        public async Task<Order> CreateOrderAsync(Order order)
+        public async Task AddAsync(Order order)
         {
-            _dbContext.Orders.Add(order);
-            await _dbContext.SaveChangesAsync();
-            return order;
+            await _dbContext.Orders.AddAsync(order);
         }
     }
 }

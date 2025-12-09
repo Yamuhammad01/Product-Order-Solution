@@ -19,8 +19,12 @@ builder.Services.AddDbContext<ProductOrderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
+
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
