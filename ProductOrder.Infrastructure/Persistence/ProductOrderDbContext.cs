@@ -13,5 +13,11 @@ namespace ProductOrder.Infrastructure.Persistence
         public ProductOrderDbContext (DbContextOptions<ProductOrderDbContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+           => base.SaveChangesAsync(cancellationToken);
     }
 }

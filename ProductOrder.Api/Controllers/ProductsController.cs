@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProductOrder.Application.DTOs;
+using ProductOrder.Application.Interfaces;
 using ProductOrder.Application.Services;
 
 namespace ProductOrder.Api.Controllers
@@ -10,10 +11,12 @@ namespace ProductOrder.Api.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly ProductService _productService;
+        private readonly OrderService _orderService;
 
-        public ProductsController(ProductService productService)
+        public ProductsController(ProductService productService, OrderService orderService)
         {
             _productService = productService;
+            _orderService = orderService;
         }
         // add a new product 
         [HttpPost("add-product")]
@@ -36,7 +39,7 @@ namespace ProductOrder.Api.Controllers
         }
 
         // get a product by id
-        [HttpGet("(get-a-product-by-id)")]
+        [HttpGet("get-a-product-by-id")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -68,6 +71,20 @@ namespace ProductOrder.Api.Controllers
                 return NotFound(new { message = "Product not found" });
 
             return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderDto dto)
+        {
+            if (dto.Items == null || !dto.Items.Any())
+                return BadRequest(new { message = "No items in order" });
+
+            var result = await _orderService.PlaceOrderAsync(dto);
+
+            if (!result.Success)
+                return BadRequest(new { message = result.Message });
+
+            return Ok(new { orderId = result.OrderId });
         }
     }
 }
