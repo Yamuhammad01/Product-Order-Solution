@@ -27,5 +27,36 @@ namespace ProductOrder.Api.Controllers
             return Ok(product);
         }
 
+        // return all products 
+        [HttpGet]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            var products = await _productService.GetAllProductsAsync();
+            return Ok(products);
+        }
+
+        // get a product by id
+        [HttpGet("{id:Guid}")]
+        public async Task<IActionResult> GetProductById(Guid id)
+        {
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null)
+                return NotFound(new { message = "Product not found" });
+
+            return Ok(product);
+        }
+
+        // 
+        // Update a product 
+        [HttpPut("{id:Guid}")] // i used guid all through for security purposes 
+        public async Task<IActionResult> UpdateProduct(Guid id, UpdateProductDto dto)
+        {
+            var updated = await _productService.UpdateProductAsync(id, dto);
+
+            if (updated == null)
+                return NotFound(new { message = "Product not found" });
+
+            return Ok(updated);
+        }
     }
 }
