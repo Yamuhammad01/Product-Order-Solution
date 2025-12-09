@@ -16,7 +16,7 @@ namespace ProductOrder.Api.Controllers
             _productService = productService;
         }
         // add a new product 
-        [HttpPost]
+        [HttpPost("add-product")]
         public async Task<IActionResult> CreateProduct([FromBody] AddProductDto dto)
         {
             if (!ModelState.IsValid)
@@ -28,7 +28,7 @@ namespace ProductOrder.Api.Controllers
         }
 
         // return all products 
-        [HttpGet]
+        [HttpGet("get-all-products")]
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -36,7 +36,7 @@ namespace ProductOrder.Api.Controllers
         }
 
         // get a product by id
-        [HttpGet("{id:Guid}")]
+        [HttpGet("(get-a-product-by-id)")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -48,7 +48,7 @@ namespace ProductOrder.Api.Controllers
 
         // 
         // Update a product 
-        [HttpPut("{id:Guid}")] // i used guid all through for security purposes 
+        [HttpPut("update-a-product-by-id")] // i used guid all through for security purposes 
         public async Task<IActionResult> UpdateProduct(Guid id, UpdateProductDto dto)
         {
             var updated = await _productService.UpdateProductAsync(id, dto);
@@ -57,6 +57,17 @@ namespace ProductOrder.Api.Controllers
                 return NotFound(new { message = "Product not found" });
 
             return Ok(updated);
+        }
+        // DELETE
+        [HttpDelete("delete-a-product-by-id")]
+        public async Task<IActionResult> DeleteProduct(Guid id)
+        {
+            var deleted = await _productService.DeleteProductAsync(id);
+
+            if (!deleted)
+                return NotFound(new { message = "Product not found" });
+
+            return NoContent();
         }
     }
 }
