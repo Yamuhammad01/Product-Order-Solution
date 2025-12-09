@@ -31,7 +31,7 @@ namespace ProductOrder.Application.Services
         }
 
         // get a product by an id 
-        public async Task<Product?> GetProductByIdAsync(Guid id)
+        public async Task<Product?> GetProductByIdAsync(int id)
         {
             return await _productRepository.GetProductByIdAsync(id);
         }
@@ -42,7 +42,7 @@ namespace ProductOrder.Application.Services
             return await _productRepository.GetAllProductsAsync();
         }
 
-        public async Task<Product?> UpdateProductAsync(Guid id, UpdateProductDto dto)
+        public async Task<Product?> UpdateProductAsync(int id, UpdateProductDto dto)
         {
             var existing = await _productRepository.GetProductByIdAsync(id);
 
@@ -58,7 +58,7 @@ namespace ProductOrder.Application.Services
         }
 
         // delete a product 
-        public async Task<bool> DeleteProductAsync(Guid id)
+        public async Task<bool> DeleteProductAsync(int id)
         {
             return await _productRepository.DeleteProductAsync(id);
         }

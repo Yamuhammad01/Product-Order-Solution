@@ -53,7 +53,7 @@ namespace ProductOrder.Infrastructure.Repository
         }
 
         // find a product by id and delete it
-        public async Task<bool> DeleteProductAsync(Guid id)
+        public async Task<bool> DeleteProductAsync(int id)
         {
             var product = await _dbContext.Products.FindAsync(id);
             if (product == null) // check if the product is in the db 

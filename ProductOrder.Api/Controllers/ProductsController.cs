@@ -40,7 +40,7 @@ namespace ProductOrder.Api.Controllers
 
         // get a product by id
         [HttpGet("get-a-product-by-id")]
-        public async Task<IActionResult> GetProductById(Guid id)
+        public async Task<IActionResult> GetProductById(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
@@ -51,8 +51,8 @@ namespace ProductOrder.Api.Controllers
 
         // 
         // Update a product 
-        [HttpPut("update-a-product-by-id")] // i used guid all through for security purposes 
-        public async Task<IActionResult> UpdateProduct(Guid id, UpdateProductDto dto)
+        [HttpPut("update-a-product-by-id")] // changed guid to int for easier access in swagger UI
+        public async Task<IActionResult> UpdateProduct(int id, UpdateProductDto dto)
         {
             var updated = await _productService.UpdateProductAsync(id, dto);
 
@@ -63,7 +63,7 @@ namespace ProductOrder.Api.Controllers
         }
         // DELETE
         [HttpDelete("delete-a-product-by-id")]
-        public async Task<IActionResult> DeleteProduct(Guid id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             var deleted = await _productService.DeleteProductAsync(id);
 
