@@ -73,18 +73,6 @@ namespace ProductOrder.Api.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PlaceOrder([FromBody] PlaceOrderDto dto)
-        {
-            if (dto.Items == null || !dto.Items.Any())
-                return BadRequest(new { message = "No items in order" });
-
-            var result = await _orderService.PlaceOrderAsync(dto);
-
-            if (!result.Success)
-                return BadRequest(new { message = result.Message });
-
-            return Ok(new { orderId = result.OrderId });
-        }
+       
     }
 }

@@ -49,10 +49,10 @@ namespace ProductOrder.Application.Services
             if (existing == null)
                 return null;
 
-            existing.Name = dto.Name;
-            existing.Description = dto.Description;
-            existing.Price = dto.Price;
-            existing.StockQuantity = dto.StockQuantity;
+            existing.Name = dto.Name ?? existing.Name; // fallsback to the existing name if the field is empty
+            existing.Description = dto.Description ?? existing.Description;
+            existing.Price = dto.Price ?? existing.Price;
+            existing.StockQuantity = dto.StockQuantity ?? existing.StockQuantity;
 
             return await _productRepository.UpdateProductAsync(existing);
         }

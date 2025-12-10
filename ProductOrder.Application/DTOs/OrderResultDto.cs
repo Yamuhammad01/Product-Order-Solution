@@ -10,9 +10,9 @@ namespace ProductOrder.Application.DTOs
     {
         public bool Success { get; set; }
         public string Message { get; set; } = string.Empty;
-        public Guid? OrderId { get; set; }
+        public int? OrderId { get; set; }
 
-        public static OrderResultDto Successful(Guid orderId)
+        public static OrderResultDto Successful(int orderId)
             => new() { Success = true, OrderId = orderId };
 
         public static OrderResultDto Failed(string message)

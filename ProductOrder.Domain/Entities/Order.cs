@@ -8,10 +8,10 @@ namespace ProductOrder.Domain.Entities
 {
     public class Order
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
         // Navigation
-        public List<OrderProduct> Items { get; set; } = new(); // EF core navigation property
+        public List<OrderProduct> Items { get; set; } = new(); // EF core navigation property 1 ----> many relationship
     }
 }
