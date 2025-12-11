@@ -12,8 +12,7 @@
 ## Table of Contents
 
 - [Overview](#overview)  
-- [Features Implemented](#features-implemented)  
-- [Architecture](#architecture)  
+- [Features Implemented](#features-implemented)   
 - [Folder Structure](#folder-structure)  
 - [Tech Stack](#tech-stack)
 - [Live Link](#live-link) 
