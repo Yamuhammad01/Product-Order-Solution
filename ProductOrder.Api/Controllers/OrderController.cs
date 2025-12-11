@@ -27,7 +27,7 @@ namespace ProductOrder.Api.Controllers
             if (!result.Success)
                 return BadRequest(new { message = result.Message });
 
-            return Ok(new { orderId = result.OrderId });
+            return Ok("Order Placed Successfully");
         }
     }
 }

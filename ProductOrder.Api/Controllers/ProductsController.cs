@@ -70,7 +70,7 @@ namespace ProductOrder.Api.Controllers
             if (!deleted)
                 return NotFound(new { message = "Product not found" });
 
-            return NoContent();
+            return Ok("Product deleted successfully");
         }
 
        

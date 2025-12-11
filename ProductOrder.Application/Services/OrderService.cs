@@ -42,7 +42,7 @@ namespace ProductOrder.Application.Services
                     var product = await _productRepository.GetProductByIdAsync(item.ProductId);
 
                     if (product == null)
-                        return OrderResultDto.Failed($"Product {item.ProductId} not found.");
+                        return OrderResultDto.Failed($"Product not found.");
 
                     if (product.StockQuantity < item.Quantity)
                         return OrderResultDto.Failed(
