@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Configure for Render deployment
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+//builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Add services to the container.
 
