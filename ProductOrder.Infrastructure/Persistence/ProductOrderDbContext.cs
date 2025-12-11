@@ -38,9 +38,10 @@ namespace ProductOrder.Infrastructure.Persistence
 
                 // Relationship: Product -> OrderProduct (1-Many)
                 entity.HasOne(op => op.Product)
-                    .WithMany(p => p. OrderProducts)
+                    .WithMany(p => p.OrderProducts)
                     .HasForeignKey(op => op.ProductId)
-                    .OnDelete(DeleteBehavior.Restrict); // Prevent deleting product that is in orders
+                     .OnDelete(DeleteBehavior.Cascade); // for development only, deleting product that has been ordered should be restricted when moving to production
+                    //.OnDelete(DeleteBehavior.Restrict); // Prevent deleting product that is in orders
             });
 
             // Order table configs
