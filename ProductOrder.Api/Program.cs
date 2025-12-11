@@ -39,6 +39,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+
+
 app.MapControllers();
+
+app.MapGet("/", () => "Core Banking API is running");// simple health check endpoint 
+
 
 app.Run();
