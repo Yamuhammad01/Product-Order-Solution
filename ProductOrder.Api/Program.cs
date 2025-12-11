@@ -3,7 +3,14 @@ using ProductOrder.Application.Interfaces;
 using ProductOrder.Application.Services;
 using ProductOrder.Infrastructure.Persistence;
 using ProductOrder.Infrastructure.Repository;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Configure for Render deployment
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Add services to the container.
 
@@ -43,7 +50,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/", () => "Core Banking API is running");// simple health check endpoint 
+app.MapGet("/", () => "ProductOrder API is running");// simple health check endpoint 
 
 
 app.Run();
