@@ -98,7 +98,7 @@ src/
 ```
 ---
 ## Live Link
-• Live Link (Swagger Docs): https://core-banking-solution.onrender.com/swagger/index.html <br>
+• Live Link (Swagger Docs): https://product-order-solution.onrender.com/swagger/index.html <br>
 
 ##  Database Schema
 
